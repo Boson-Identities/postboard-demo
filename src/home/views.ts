@@ -1,8 +1,13 @@
 import { Router } from 'express';
+import { BosonService } from '../boson/bosonservice';
 
-const router = Router();
-router.get('/', (req, res) => {
-    res.render('index', { creator: 'Olaf Tomalka' })
-});
-
-export default router;
+export default (boson: BosonService) => {
+    const router = Router();
+    router.get('/', (req, res) => {
+        res.render('index', {
+            bosonLoginUri: boson.loginUri,
+            shouts: []
+        })
+    });
+    return router;
+}

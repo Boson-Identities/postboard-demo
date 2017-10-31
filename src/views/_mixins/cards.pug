@@ -1,0 +1,11 @@
+mixin card(title, subtitle)
+    .card.m-2&attributes(attributes)
+        .card-body
+          h4.card-title= title
+          h6.card-subtitle.mb-3.text-muted= subtitle
+          block
+
+mixin shout(title, subtitle, text)
+  .col-sm-6.col-lg-4.col-xl-3
+    +card(title, subtitle)&attributes(attributes)
+        p= text

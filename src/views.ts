@@ -1,10 +1,18 @@
 import * as express from 'express';
 
 import home from './home/views';
+import boson from './boson/views';
 
-const router = express.Router();
+import { BosonService } from './boson/bosonservice';
+import { Config } from './config';
 
-router.use('/static', express.static('static'))
-router.use('/', home)
+export default (config: Config) => {
+    const bosonService = new BosonService(config);
 
-export default router
+    // Routes
+    const router = express.Router();
+    router.use('/static', express.static('static'))
+    router.use('/', home(bosonService))
+    router.use('/', boson(bosonService))
+    return router;
+}

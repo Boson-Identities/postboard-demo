@@ -1,6 +1,9 @@
-# Expresjs + Typescript + Pug + Sass starter
-Proper configuring of a nice set-up for expressjs each time is too much work.
-But having a nice starter that you can just clone is pretty rad
+# Postboard demo
+This demo showcases Boson.me possibilites by allowing anonymous users to post on a post-board
+while still mainitainig uniquness (which is verified by a phone).
+
+This allows the post-board to not need any user data and fight with regulators while still providing
+for example proper moderation service 
 
 ## Start serve server
 

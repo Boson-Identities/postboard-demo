@@ -1,6 +1,6 @@
 version: "2"
 services:
-  app:
+  postboard:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -10,3 +10,19 @@ services:
       - "127.0.0.1:8080:8080"
       - "127.0.0.1:35729:35729"
     command: "npm run serve"
+    depends_on:
+      - cache
+    networks:
+      - boson
+      - backend
+
+  cache:
+    image: redis:4-alpine
+    networks: 
+      - backend
+
+networks:
+  backend:
+  boson:
+    external:
+      name: boson_world

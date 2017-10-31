@@ -1,12 +1,49 @@
+include _mixins/cards.pug
+
 doctype html
 html(lang="en")
   head
     title Express Starter
-    link(rel="stylesheet" type="text/css" href="static/css/main.css")
+    link(rel="stylesheet" type="text/css" href="/static/ext/bootstrap4beta2/css/bootstrap.min.css")
+    link(rel="stylesheet" type="text/css" href="/static/css/main.css")
+
+    script(src="/static/ext/jquery321/jquery.slim.min.js")
+    script(src="/static/js/main.js")
     if development
       include _includes/debug.pug
-  body
-    div
-      h1 This is a starter project by #{creator} for Expressjs server
-      h2 As well as Typescript, Pug and Sass
-      img(src="/static/img/olaf_square.png")
+  body.p-2
+    .row.no-gutters
+      .col-lg-3.col-xl-2.offset-xl-1
+        +card('Shout something', 'Not logged-in')
+          form
+            .form-group
+              input(type="text", id="title", placeholder="Your title", maxlength=20, disabled).form-control
+            .form-group
+              textarea(id="shout", placeholder="Let the world hear your roar!" rows=3, maxlength=70, disabled).form-control
+              small#shout-count.form-text.text-muted.float-right 70
+            .form-group
+              input(type="submit", value="Post", disabled).btn
+          a(href=bosonLoginUri).btn.btn-primary Log-in
+      .col-lg-9.col-xl-8
+        .row.no-gutters
+          +shout(
+            "What's this?",
+            "Annoucement",
+            "A post board where you can post anonymously, but still be verifably unique"
+            ).border-secondary
+          +shout(
+            "No headaches",
+            "Annoucement",
+            "Boson.me verifies your account (eg. ID or Phone Number), and your data stays there!"
+            ).border-secondary
+          +shout(
+            "Benefits",
+            "Annoucement",
+            "Your identity is safe, while the app creators can trust you without fighting an army of regulators"  
+            ).border-primary
+          //each shoutData in shouts
+            +shout(
+              shoutData.title,
+              shoutData.subtitle,
+              shoutData.text
+            )

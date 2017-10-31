@@ -12,8 +12,8 @@ const server = require('gulp-develop-server');
 const changed = require('gulp-changed');
 
 const config = {
-    buildDir: 'build/',
-    srcDir: 'src/',
+    buildDir: './build/',
+    srcDir: './src/',
     templatesDir: 'views/',
     sassDir: 'sass/',
     assetsDir: 'static/'
