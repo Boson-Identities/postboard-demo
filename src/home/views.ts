@@ -3,9 +3,11 @@ import { BosonService } from '../boson/bosonservice';
 
 export default (boson: BosonService) => {
     const router = Router();
-    router.get('/', (req, res) => {
+    router.get('/', async (req, res) => {
+        const user = await boson.userFromSession(req);
         res.render('index', {
             bosonLoginUri: boson.loginUri,
+            user,
             shouts: []
         })
     });

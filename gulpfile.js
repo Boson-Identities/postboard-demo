@@ -98,7 +98,7 @@ gulp.task('server:start', ['build'], () => {
         successMessage: /^Server is listening/,
         env: {
             NODE_ENV: 'development',
-            DEBUG: 'express:application,express:router',
+            DEBUG: 'express:application,express:router,postboard:*',
             DEBUG_COLORS: true
         }
     })

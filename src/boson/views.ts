@@ -4,17 +4,15 @@ import { BosonService, ROUTE } from './bosonservice';
 
 export default (boson: BosonService) => {
     const router = Router();
-    router.get(ROUTE, (req, res) => {
-        boson.loginUser(req.query.code).then(
-            (result) => {
-                console.log(result);
-                res.redirect('/');
-                res.end();
-            },
-            (err) => {
-                console.error('Token access error: ' + err.message);
-                res.json('Authentication failed');
-            })
+    router.get(ROUTE, async (req, res) => {
+        try {
+            await boson.userFromAuthCode(req);
+        } catch(err) {
+            console.trace('Error during user login', err);
+            return res.json('Authentication failed');
+        }
+        res.redirect('/');
+        return res.end();
     });
 
     return router;

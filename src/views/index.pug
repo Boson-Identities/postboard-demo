@@ -14,16 +14,19 @@ html(lang="en")
   body.p-2
     .row.no-gutters
       .col-lg-3.col-xl-2.offset-xl-1
-        +card('Shout something', 'Not logged-in')
+        +card('Shout something', user.friendlyId)
           form
             .form-group
-              input(type="text", id="title", placeholder="Your title", maxlength=20, disabled).form-control
+              input(type="text", id="title", placeholder="Your title", maxlength=20, disabled=!user.loggedIn).form-control
             .form-group
-              textarea(id="shout", placeholder="Let the world hear your roar!" rows=3, maxlength=70, disabled).form-control
+              textarea(id="shout", placeholder="Let the world hear your roar!" rows=3, maxlength=70, disabled=!user.loggedIn).form-control
               small#shout-count.form-text.text-muted.float-right 70
             .form-group
-              input(type="submit", value="Post", disabled).btn
-          a(href=bosonLoginUri).btn.btn-primary Log-in
+              input(type="submit", value="Post", disabled=!user.loggedIn, class=user.loggedIn && 'btn-primary').btn
+          if user.loggedIn
+            a(href='/user/logout').btn.btn-sm.btn-secondary Log-out
+          else
+            a(href=bosonLoginUri).btn.btn-sm.btn-primary Log-in
       .col-lg-9.col-xl-8
         .row.no-gutters
           +shout(
