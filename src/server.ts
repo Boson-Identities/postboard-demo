@@ -3,12 +3,14 @@ import * as redis from "redis";
 import * as bluebird from 'bluebird';
 import * as session from 'express-session';
 import * as connectredis from 'connect-redis';
+import * as bodyparser from 'body-parser';
 
 import config from './config';
 import views from './views';
 
-bluebird.promisifyAll(redis.Multi);
-bluebird.promisifyAll(redis.RedisClient);
+bluebird.promisifyAll(redis.Multi.prototype);
+bluebird.promisifyAll(redis.RedisClient.prototype);
+
 const redisClient = redis.createClient({
     host: 'cache'
 });
@@ -18,6 +20,8 @@ redisClient.on("error", function (err) {
 
 const app = express()
 app.set('view engine', 'pug')
+
+app.use(bodyparser({ extended: false }));
 
 const RedisStore = connectredis(session);
 app.use(session({
@@ -36,7 +40,7 @@ app.use((req, res, next) => {
    next();
 })
 
-app.use('/', views(config))
+app.use('/', views(config, redisClient))
 
 app.listen(8080, () => {
     console.log('Server is listening on 8080')

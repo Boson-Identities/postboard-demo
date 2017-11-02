@@ -1,5 +1,5 @@
 export interface Shout {
-    tile: string;
+    title: string;
     subtitle: string;
     text: string;
 }

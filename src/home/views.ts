@@ -1,15 +1,21 @@
 import { Router } from 'express';
-import { BosonService } from '../boson/bosonservice';
 
-export default (boson: BosonService) => {
+import { MAX_SHOUT_LENGTH, MAX_TITLE_LENGTH } from '../constants';
+import { BosonService } from '../boson/bosonservice';
+import { ShoutService } from '../shouts/shoutservice';
+
+export default (boson: BosonService, shoutService: ShoutService) => {
     const router = Router();
     router.get('/', async (req, res) => {
         const user = await boson.userFromSession(req);
+        const shouts = await shoutService.all();
         res.render('index', {
             bosonLoginUri: boson.loginUri,
             user,
-            shouts: []
-        })
+            MAX_SHOUT_LENGTH,
+            MAX_TITLE_LENGTH,
+            shouts
+        });
     });
     return router;
 }
