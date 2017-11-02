@@ -21,7 +21,7 @@ redisClient.on("error", function (err) {
 const app = express()
 app.set('view engine', 'pug')
 
-app.use(bodyparser({ extended: false }));
+app.use(bodyparser.urlencoded({ extended: false }));
 
 const RedisStore = connectredis(session);
 app.use(session({

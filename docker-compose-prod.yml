@@ -1,0 +1,14 @@
+version: "2"
+services:
+  postboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "127.0.0.1:80:8080"
+    command: "node server.js"
+    depends_on:
+      - cache
+
+  cache:
+    image: redis:4-alpine

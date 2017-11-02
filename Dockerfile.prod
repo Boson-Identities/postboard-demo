@@ -1,0 +1,11 @@
+FROM node:8-alpine
+
+USER node
+ADD ./config.json /home/node/app/
+ADD --chown=node:node ./build /home/node/app/build
+ADD package.json package-lock.json /home/node/app/build/
+WORKDIR /home/node/app/build
+ENV NODE_ENV='production'
+ENV DEBUG='express:application,express:router,postboard:*'
+ENV DEBUG_COLORS='true'
+RUN npm install --production
