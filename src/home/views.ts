@@ -10,7 +10,7 @@ export default (boson: BosonService, shoutService: ShoutService) => {
         const user = await boson.userFromSession(req);
         const shouts = await shoutService.all();
         res.render('index', {
-            bosonLoginUri: boson.loginUri,
+            bosonLoginUri: boson.loginUri(req),
             user,
             MAX_SHOUT_LENGTH,
             MAX_TITLE_LENGTH,

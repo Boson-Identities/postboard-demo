@@ -3,6 +3,7 @@ import { create as Oauth2Create, OAuthClient} from 'simple-oauth2';
 import * as Bluebird from 'bluebird';
 import * as Debug from 'debug';
 import * as request from 'request';
+import * as randomstring from 'randomstring';
 
 import { Config } from '../config';
 import { BosonToken } from './token';
@@ -38,10 +39,13 @@ export class BosonService {
         });
     }
 
-    get loginUri(): string {
+    loginUri(req: Request): string {
+        req.session!!.oauthState = randomstring.generate();
+        req.session!!.save(() => {})
         return this.oauth2.authorizationCode.authorizeURL({
             redirect_uri: this.redirectUri,
-            scope: SCOPES
+            scope: SCOPES,
+            state: req.session!!.oauthState 
         });
     }
 
@@ -67,8 +71,12 @@ export class BosonService {
     async userFromAuthCode(callbackReq: Request) {
         debug('Logging Boson user, code: ', callbackReq.query.code);
 
+        if (callbackReq.query.state !== callbackReq.session!!.oauthState) {
+            throw new Error("Invalid state");
+        }
+
         if (!callbackReq.query.code) {
-            throw new Error("The request doesn\'t have the Boson's OAuth2 code ");
+            throw new Error("The request doesn\'t have the Boson's OAuth2 code");
         }
         const code = callbackReq.query.code;
         const token: BosonToken = (await this.oauth2.authorizationCode
